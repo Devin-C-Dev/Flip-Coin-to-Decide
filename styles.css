@@ -1,0 +1,1469 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background-color: rgba(239, 68, 68, 0.9);
+    color: #FFFFFF;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    max-width: 300px;
+    pointer-events: none;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+:root {
+    /* Color System */
+    --background: #F5F5F7;
+    --primary: #000000;
+    --secondary: #666666;
+    --text-placeholder: #99999980;
+    --border: #F0F0F0;
+    --success: #10B981;
+    --warning: #EF4444;
+    --gold: #C9A227;
+    --white: #FFFFFF;
+
+    /* Typography */
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 24px;
+    --spacing-2xl: 32px;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--primary);
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-container {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--background);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Mobile Frame - Content Container */
+.mobile-frame {
+    width: 100%;
+    max-width: 430px;
+    min-height: 100vh;
+    position: relative;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Stage Management */
+.stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    display: none;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Desktop / Browser - Fixed size centered */
+@media (min-width: 431px) {
+    .app-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .mobile-frame {
+        width: 390px;
+        height: 844px;
+        flex-shrink: 0;
+    }
+
+    .stage {
+        height: 844px;
+    }
+}
+
+.stage.active {
+    display: flex;
+}
+
+/* Typography */
+.title {
+    font-family: var(--font-serif);
+    font-size: 36px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subtitle {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+    margin-bottom: 8px;
+    flex-shrink: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Mobile Layout Structure - Fixed header, flexible content, fixed footer */
+.stage-header {
+    flex: 0 0 auto;
+    padding: 40px 24px 8px 24px;
+    background-color: var(--background);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 86px;
+}
+
+.stage-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 24px;
+    overflow: hidden;
+    width: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+}
+
+.stage-footer {
+    flex: 0 0 auto;
+    padding: 12px 24px 40px 24px;
+    background-color: var(--background);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Desktop specific adjustments */
+@media (min-width: 431px) {
+    .stage-header {
+        padding-top: 40px;
+    }
+
+    .stage-content {
+        padding: 0 24px;
+    }
+
+    .stage-footer {
+        padding: 12px 24px 40px 24px;
+    }
+}
+
+/* Small screen optimization (iPhone SE, etc.) */
+@media (max-height: 700px) {
+    .stage-header {
+        padding: 8px 20px 4px 20px;
+    }
+
+    .stage-content {
+        padding: 4px 20px;
+    }
+
+    .stage-footer {
+        padding: 8px 20px 40px 20px;
+    }
+
+    .title {
+        font-size: 28px;
+    }
+
+    .subtitle {
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    /* Stage 1 */
+    .coin-showcase {
+        height: 180px;
+    }
+
+    .coin-display {
+        width: 140px;
+        height: 160px;
+    }
+
+    .coin-display img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .coin-name {
+        font-size: 20px;
+    }
+
+    .coin-description {
+        font-size: 12px;
+    }
+
+    .select-button,
+    .ready-button,
+    .back-button {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    .back-button {
+        background-color: var(--white);
+        color: #1a1a1a;
+        border: 1px solid var(--border);
+    }
+
+    /* Stage 3 */
+    .choice-container {
+        gap: 12px;
+    }
+
+    #stage3 .back-button {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    .choice-row {
+        height: 44px;
+    }
+
+    .choice-input {
+        height: 38px;
+        font-size: 14px;
+    }
+
+    .choice-tag {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+
+    .choice-binds {
+        height: 38px;
+    }
+
+    .bind-button {
+        height: 34px;
+        font-size: 12px;
+    }
+
+    .bind-button .bind-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .binding-summary {
+        height: 100px;
+        padding: 14px;
+    }
+
+    /* Stage 4 */
+    .flip-button {
+        width: 100px;
+        height: 100px;
+        font-size: 20px;
+    }
+
+    .flip-container {
+        min-height: 260px;
+    }
+
+    .coin {
+        width: 140px;
+        height: 140px;
+    }
+
+    /* Stage 5 */
+    .verify-content {
+        gap: 12px;
+    }
+
+    .result-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .verify-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .question-panel {
+        padding: 14px;
+        min-height: 80px;
+    }
+
+    .question-text {
+        font-size: 14px;
+    }
+
+    .reference-box {
+        padding: 14px;
+    }
+
+    .yes-button,
+    .no-button {
+        height: 42px;
+        font-size: 13px;
+    }
+
+    /* Stage 6 */
+    .celebration-title {
+        font-size: 28px;
+    }
+
+    .celebration-subtitle {
+        font-size: 12px;
+    }
+
+    .decision-card {
+        padding: 18px;
+    }
+
+    .decision-text {
+        font-size: 28px;
+    }
+
+    .restart-button {
+        height: 42px;
+        font-size: 14px;
+    }
+
+    /* Stage 0 */
+    .loading-spinner {
+        width: 80px;
+        height: 80px;
+    }
+
+    .spinner-ring {
+        width: 80px;
+        height: 80px;
+    }
+
+    .spinner-coin {
+        width: 40px;
+        height: 40px;
+    }
+
+    .loading-title {
+        font-size: 20px;
+    }
+
+    .loading-subtitle {
+        font-size: 12px;
+    }
+}
+
+/* Stage 1: Coin Selection */
+.coin-showcase {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+    max-width: 342px;
+    height: 220px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.coin-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    max-width: 342px;
+    align-items: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nav-button {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: var(--white);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: 300;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: var(--border);
+}
+
+.nav-button:active {
+    transform: scale(0.95);
+}
+
+.coin-display {
+    width: 160px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.coin-display img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+}
+
+.coin-name {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: #1a1a1a;
+}
+
+.coin-description {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.select-button,
+.ready-button,
+.back-button {
+    width: 100%;
+    max-width: 342px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.select-button:hover,
+.ready-button:hover {
+    background-color: #333333;
+}
+
+.select-button:active,
+.ready-button:active {
+    transform: scale(0.98);
+}
+
+.back-button:hover {
+    background-color: var(--border);
+}
+
+.back-button:active {
+    transform: scale(0.98);
+}
+
+/* Stage 2: Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    pointer-events: none;
+}
+
+.modal-overlay.active {
+    display: flex;
+    pointer-events: auto;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary);
+    opacity: 0.4;
+}
+
+.modal-card {
+    position: relative;
+    width: 342px;
+    background-color: var(--white);
+    border-radius: 32px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+}
+
+.modal-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: #1a1a1a;
+}
+
+.sides-grid {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    height: 100px;
+}
+
+.side-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 130px;
+}
+
+.side-preview {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+
+.side-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.side-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--secondary);
+    text-align: center;
+}
+
+.divider {
+    width: 1px;
+    height: 40px;
+    background-color: var(--border);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.back-button,
+.confirm-button {
+    flex: 1;
+    height: 52px;
+    border-radius: 26px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.back-button {
+    background-color: var(--white);
+    color: #1a1a1a;
+    border: 1px solid var(--border);
+}
+
+.back-button:hover {
+    background-color: var(--border);
+}
+
+/* Stage 3 footer buttons */
+#stage3 .back-button {
+    width: 100%;
+    max-width: 342px;
+    height: 50px;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    flex: none;
+}
+
+.confirm-button {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+}
+
+.confirm-button:hover {
+    background-color: #333333;
+}
+
+/* Stage 3: Decision Binding */
+.choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 342px;
+    align-items: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.choice-block {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    max-width: 342px;
+    box-sizing: border-box;
+}
+
+.choice-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 50px;
+}
+
+.choice-tag {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.choice-a-tag {
+    background-color: var(--primary);
+}
+
+.choice-b-tag {
+    background-color: var(--secondary);
+}
+
+.choice-input {
+    flex: 1;
+    height: 42px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--white);
+    padding: 0 12px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    color: var(--primary);
+}
+
+.choice-input::placeholder {
+    color: var(--text-placeholder);
+}
+
+.choice-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.choice-binds {
+    display: flex;
+    gap: 6px;
+    height: 42px;
+}
+
+.bind-button {
+    flex: 1;
+    height: 38px;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.bind-button .bind-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.bind-button.active {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.bind-button:hover:not(.active) {
+    background-color: #E0E0E0;
+}
+
+.binding-summary {
+    width: 100%;
+    max-width: 342px;
+    height: 120px;
+    background-color: var(--white);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+}
+
+.summary-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.summary-list {
+    width: 294px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.summary-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+}
+
+.summary-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.summary-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--secondary);
+}
+
+.summary-arrow {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--secondary);
+}
+
+.summary-value {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Stage 4: Flip Animation */
+#stage4 {
+    align-items: stretch;
+}
+
+.flip-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    position: relative;
+    min-height: 320px;
+}
+
+/* Coin Container - 3D Scene */
+.coin {
+    width: 160px;
+    height: 160px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transform-style: preserve-3d;
+}
+
+/* Coin Faces */
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+.face.heads {
+    background-image: url('images/美元正面.png');
+    transform: rotateX(0deg);
+}
+
+.face.tails {
+    background-image: url('images/美元反面.png');
+    transform: rotateX(180deg);
+}
+
+/* Coin Edge - 暂时移除以解决背面贴图显示问题 */
+/*
+.coin::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #808080;
+    transform: translateZ(-10px);
+    backface-visibility: hidden;
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.coin::after {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: #666666;
+    transform: translateZ(-20px);
+    backface-visibility: hidden;
+    box-shadow:
+        inset 0 0 20px rgba(0, 0, 0, 0.3),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+}
+*/
+
+/* 飞行动画 - 硬币往上抛，单向持续翻转，速率一致，落地回弹 */
+@keyframes fly {
+    0% {
+        top: 200px;
+        transform: translateX(-50%) rotateX(0deg);
+    }
+    15% {
+        top: var(--target-top, -200px);
+        transform: translateX(-50%) rotateX(360deg);
+    }
+    30% {
+        top: var(--target-top, -200px);
+        transform: translateX(-50%) rotateX(720deg);
+    }
+    45% {
+        top: var(--target-top, -200px);
+        transform: translateX(-50%) rotateX(1080deg);
+    }
+    60% {
+        top: var(--target-top, -200px);
+        transform: translateX(-50%) rotateX(1440deg);
+    }
+    75% {
+        top: 200px;
+        transform: translateX(-50%) rotateX(1800deg);
+    }
+    82% {
+        top: 150px;
+        transform: translateX(-50%) rotateX(1960deg);
+    }
+    89% {
+        top: 195px;
+        transform: translateX(-50%) rotateX(2050deg);
+    }
+    95% {
+        top: 175px;
+        transform: translateX(-50%) rotateX(2100deg);
+    }
+    100% {
+        top: 200px;
+        transform: translateX(-50%) rotateX(var(--final-rotation, 2160deg));
+    }
+}
+
+/* 正面翻转动画 */
+@keyframes flip-head {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(360deg); }
+}
+
+/* 反面翻转动画 */
+@keyframes flip-tail {
+    0% { transform: rotateX(180deg); }
+    100% { transform: rotateX(540deg); }
+}
+
+/* 抛硬币动画类 - 使用更自然的缓动函数 */
+.coin.flipping {
+    animation: fly var(--duration, 2s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.flip-button {
+    width: 120px;
+    height: 120px;
+    border-radius: 60px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    font-family: var(--font-sans);
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.flip-button:hover {
+    background-color: #333333;
+}
+
+.flip-button:active {
+    transform: scale(0.95);
+}
+
+.flip-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Stage 5: Verification */
+.verify-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 342px;
+    align-items: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.result-image {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.result-tag {
+    height: 24px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background-color: var(--border);
+    font-family: var(--font-sans);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.verify-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.question-panel {
+    width: 100%;
+    max-width: 342px;
+    min-height: 90px;
+    background-color: var(--white);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.question-text {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.reference-box {
+    width: 100%;
+    max-width: 342px;
+    background-color: var(--white);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ref-label {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.ref-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.ref-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ref-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.ref-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--secondary);
+}
+
+.verify-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 342px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.yes-button,
+.no-button {
+    flex: 1;
+    height: 48px;
+    border-radius: 24px;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    transition: all 0.2s ease;
+}
+
+.yes-button {
+    background-color: var(--success);
+}
+
+.yes-button:hover {
+    background-color: #059669;
+}
+
+.no-button {
+    background-color: var(--warning);
+}
+
+.no-button:hover {
+    background-color: #DC2626;
+}
+
+/* Stage 6: Celebration */
+#stage6 {
+    padding: 0;
+}
+
+#stage6.active {
+    align-items: center;
+    justify-content: center;
+}
+
+.celebration-content {
+    width: 100%;
+    max-width: 342px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.celebration-title {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    color: #1a1a1a;
+}
+
+.celebration-subtitle {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.decision-card {
+    width: 100%;
+    max-width: 342px;
+    background-color: var(--white);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.decision-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+}
+
+.decision-text {
+    font-family: var(--font-serif);
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--primary);
+}
+
+.destiny-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 16px;
+}
+
+.star {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--gold);
+}
+
+.destiny-text {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--gold);
+}
+
+.restart-button {
+    width: 100%;
+    max-width: 180px;
+    height: 48px;
+    border-radius: 24px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.restart-button:hover {
+    background-color: #333333;
+}
+
+.trust-line {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stage.active {
+    animation: fadeIn 0.3s ease;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stage 0: Asset Preloading */
+#stage0 {
+    background-color: var(--background);
+    justify-content: center;
+}
+
+.loading-content {
+    width: 100%;
+    max-width: 342px;
+    height: 100%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loading-spinner {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.spinner-ring {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    border: 3px solid transparent;
+    border-top-color: var(--gold);
+    border-right-color: var(--gold);
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+}
+
+.spinner-coin {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-image: url('images/美元正面.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: coinPulse 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes coinPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+.loading-title {
+    font-family: var(--font-serif);
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+    color: #1a1a1a;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loading-subtitle {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    color: var(--secondary);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.loading-progress {
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 3px;
+    background-color: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), #E5A800);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--secondary);
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>命运抛硬币 - 做出你的决定</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="mobile-frame">
+        <!-- Toast Notification -->
+        <div id="toast" class="toast"></div>
+        <!-- Stage 0: Asset Preloading -->
+        <div id="stage0" class="stage active">
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-coin"></div>
+                </div>
+                <h1 class="loading-title">正在准备硬币资产...</h1>
+                <p class="loading-subtitle">请稍候，正在加载高精图像资源</p>
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">0%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 1: Coin Selection -->
+        <div id="stage1" class="stage">
+            <div class="stage-header">
+                <h1 class="title">选择你的硬币</h1>
+                <p class="subtitle" id="coinSelectionSubtitle">已选择美元硬币</p>
+            </div>
+
+            <div class="stage-content">
+                <div class="coin-showcase">
+                    <button class="nav-button prev-button" id="prevCoin">‹</button>
+                    <div class="coin-display">
+                        <img id="coinImage" src="images/美元正面.png" alt="Coin">
+                    </div>
+                    <button class="nav-button next-button" id="nextCoin">›</button>
+                </div>
+
+                <div class="coin-info">
+                    <h2 class="coin-name" id="coinName">美元硬币</h2>
+                    <p class="coin-description" id="coinDescription">美国货币 • 25美分</p>
+                </div>
+            </div>
+
+            <div class="stage-footer">
+                <button class="select-button" id="selectCoinBtn">选择此硬币</button>
+            </div>
+        </div>
+
+        <!-- Stage 2: Configuration Modal (Overlay) -->
+        <div id="configModal" class="modal-overlay">
+            <div class="modal-backdrop"></div>
+            <div class="modal-card">
+                <h2 class="modal-title">硬币配置</h2>
+
+                <div class="sides-grid">
+                    <div class="side-item">
+                        <img id="modalHeadsPreview" src="images/美元正面.png" class="side-preview" alt="Heads">
+                        <div class="side-details">
+                            <p class="side-label">正面 / Front</p>
+                        </div>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="side-item">
+                        <img id="modalTailsPreview" src="images/美元反面.png" class="side-preview" alt="Tails">
+                        <div class="side-details">
+                            <p class="side-label">反面 / Back</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="back-button" id="backToStage1">返回</button>
+                    <button class="confirm-button" id="confirmConfig">确认</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 3: Decision Binding -->
+        <div id="stage3" class="stage">
+            <div class="stage-header">
+                <h1 class="title">你的决定</h1>
+                <p class="subtitle">将选项绑定到硬币的正反面</p>
+            </div>
+
+            <div class="stage-content">
+                <div class="choice-container">
+                    <!-- Choice A Block -->
+                    <div class="choice-block">
+                        <div class="choice-row">
+                            <div class="choice-tag choice-a-tag">A</div>
+                            <input type="text" class="choice-input" id="choiceAInput" placeholder="第一个选择">
+                        </div>
+                        <div class="choice-binds">
+                            <button class="bind-button active" id="choiceAFrontBind" data-side="front">
+                                <img src="images/美元正面.png" class="bind-icon">
+                                <span>正面</span>
+                            </button>
+                            <button class="bind-button" id="choiceABackBind" data-side="back">
+                                <img src="images/美元反面.png" class="bind-icon">
+                                <span>反面</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Choice B Block -->
+                    <div class="choice-block">
+                        <div class="choice-row">
+                            <div class="choice-tag choice-b-tag">B</div>
+                            <input type="text" class="choice-input" id="choiceBInput" placeholder="第二个选择">
+                        </div>
+                        <div class="choice-binds">
+                            <button class="bind-button" id="choiceBFrontBind" data-side="front">
+                                <img src="images/美元正面.png" class="bind-icon">
+                                <span>正面</span>
+                            </button>
+                            <button class="bind-button active" id="choiceBBackBind" data-side="back">
+                                <img src="images/美元反面.png" class="bind-icon">
+                                <span>反面</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Binding Summary -->
+                    <div class="binding-summary">
+                        <p class="summary-label">绑定关系</p>
+                        <div class="summary-list">
+                            <div class="summary-row">
+                                <img src="images/美元正面.png" class="summary-icon">
+                                <span class="summary-text">正面</span>
+                                <span class="summary-arrow">→</span>
+                                <span class="summary-value" id="summaryFrontValue">—</span>
+                            </div>
+                            <div class="summary-row">
+                                <img src="images/美元反面.png" class="summary-icon">
+                                <span class="summary-text">反面</span>
+                                <span class="summary-arrow">→</span>
+                                <span class="summary-value" id="summaryBackValue">—</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-footer">
+                <button class="back-button" id="backToSelectionBtn">返回选择</button>
+                <button class="ready-button" id="readyToFlipBtn">准备抛硬币</button>
+            </div>
+        </div>
+
+        <!-- Stage 4: Flip Animation -->
+        <div id="stage4" class="stage">
+            <div class="stage-header"></div>
+
+            <div class="stage-content">
+                <div class="flip-container">
+                    <div id="coin" class="coin">
+                        <div class="face heads"></div>
+                        <div class="face tails"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-footer">
+                <button class="flip-button" id="flipBtn">抛硬币</button>
+            </div>
+        </div>
+
+        <!-- Stage 5: Verification -->
+        <div id="stage5" class="stage">
+            <div class="stage-header">
+                <div class="result-header">
+                    <img id="verificationCoinImage" src="images/美元正面.png" class="result-image" alt="Result">
+                    <div class="result-tag" id="verificationResultTag">正面</div>
+                </div>
+                <h2 class="verify-title">让我确认一下...</h2>
+            </div>
+
+            <div class="stage-content">
+                <div class="verify-content">
+                    <div class="question-panel">
+                        <p class="question-text" id="questionText">我看到是正面。这是代表'我要炒股'吗？</p>
+                    </div>
+
+                    <div class="reference-box">
+                        <p class="ref-label">快速参考</p>
+                        <div class="ref-items">
+                            <div class="ref-row">
+                                <img src="images/美元正面.png" class="ref-icon">
+                                <span class="ref-text" id="refFrontText">我要炒股</span>
+                            </div>
+                            <div class="ref-row">
+                                <img src="images/美元反面.png" class="ref-icon">
+                                <span class="ref-text" id="refBackText">我不要炒股</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stage-footer">
+                <div class="verify-buttons">
+                    <button class="yes-button" id="verifyYesBtn">是</button>
+                    <button class="no-button" id="verifyNoBtn">否</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stage 6: Celebration -->
+        <div id="stage6" class="stage">
+            <div class="celebration-content">
+                <h1 class="celebration-title">恭喜！</h1>
+                <p class="celebration-subtitle">命运已做出选择</p>
+
+                <div class="decision-card">
+                    <p class="decision-label">选择</p>
+                    <p class="decision-text" id="finalDecision">我要炒股</p>
+                    <div class="destiny-line">
+                        <span class="star">★</span>
+                        <span class="destiny-text">命运已言</span>
+                        <span class="star">★</span>
+                    </div>
+                </div>
+
+                <button class="restart-button" id="startOverBtn">重新开始</button>
+                <p class="trust-line">相信你的选择</p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
